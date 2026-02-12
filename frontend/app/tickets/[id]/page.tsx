@@ -18,6 +18,7 @@ export default function TicketDetail() {
   const [summary, setSummary] = useState("");
   const [status, setStatus] = useState("OPEN");
   const [logs, setLogs] = useState<any[]>([]);
+  const [displayedLogsCount, setDisplayedLogsCount] = useState(4);
 
   const runAI = async () => {
     const res = await fetch(`http://127.0.0.1:8000/tickets/${id}/summarize`, {
@@ -107,7 +108,6 @@ export default function TicketDetail() {
   return (
     <AdminLayout>
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Header */}
         <div>
           <Button
             variant="ghost"
@@ -166,7 +166,6 @@ export default function TicketDetail() {
               </div>
             </div>
 
-          {/* Divider */}
           <div className="border-t"></div>
 
           {/* AI Summary */}
@@ -193,7 +192,6 @@ export default function TicketDetail() {
             </div>
           </div>
 
-          {/* Divider */}
           <div className="border-t"></div>
 
           {/* AI Reply */}
@@ -239,7 +237,6 @@ export default function TicketDetail() {
             </div>
           </div>
 
-          {/* Divider */}
           <div className="border-t"></div>
 
           {/* Activity Log */}
@@ -249,15 +246,41 @@ export default function TicketDetail() {
             {logs.length === 0 ? (
               <p className="text-sm text-gray-400">No activity yet</p>
             ) : (
-              <div className="space-y-2">
-                {logs.map((log) => (
-                  <div
-                    key={log.id}
-                    className="text-sm border rounded-lg px-3 py-2 bg-gray-50"
-                  >
-                    {log.action}
+              <div className="border rounded-lg p-2 max-h-55 overflow-y-auto">
+                {displayedLogsCount < logs.length ? (
+                  <>
+                    <div className="space-y-2">
+                      {logs.slice(0, displayedLogsCount).map((log) => (
+                        <div
+                          key={log.id}
+                          className="text-sm px-3 py-2"
+                        >
+                          {log.action}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-2 text-center">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setDisplayedLogsCount(prev => Math.min(prev + 5, logs.length))}
+                      >
+                        Load More
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-2">
+                    {logs.map((log) => (
+                      <div
+                        key={log.id}
+                        className="text-sm px-3 py-2"
+                      >
+                        {log.action}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
             </div>
