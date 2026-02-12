@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/utils";
+import AdminLayout from "@/components/layout/AdminLayout";
 
 export default function TicketDetail() {
   const params = useParams();
@@ -95,15 +96,17 @@ export default function TicketDetail() {
 
   if (!isAuthenticated || !ticket) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p>Loading...</p>
-      </div>
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <p>Loading...</p>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <AdminLayout>
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div>
           <Button
@@ -118,61 +121,61 @@ export default function TicketDetail() {
           <p className="text-gray-500 text-sm">AI-assisted support dashboard</p>
         </div>
 
-        {/* Ticket Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{ticket.title}</CardTitle>
-          </CardHeader>
+        {/* Main Form Container */}
+        <Card className="p-6">
+          <div className="space-y-6">
+            {/* Ticket Info */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4">{ticket.title}</h2>
+              <p className="text-gray-600 mb-4">{ticket.description}</p>
 
-          <CardContent>
-            <p className="text-gray-600">{ticket.description}</p>
+              <div className="space-y-2">
+                {(ticket.name || ticket.email) && (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-500">Contact:</span>
+                    <span className="text-sm text-gray-700">
+                      {ticket.name && <span>{ticket.name}</span>}
+                      {ticket.name && ticket.email && <span> • </span>}
+                      {ticket.email && <span>{ticket.email}</span>}
+                    </span>
+                  </div>
+                )}
 
-            <div className="mt-4 space-y-2">
-              {(ticket.name || ticket.email) && (
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-500">Contact:</span>
-                  <span className="text-sm text-gray-700">
-                    {ticket.name && <span>{ticket.name}</span>}
-                    {ticket.name && ticket.email && <span> • </span>}
-                    {ticket.email && <span>{ticket.email}</span>}
-                  </span>
+                  <span className="text-sm text-gray-500">Status:</span>
+
+                  <select
+                    value={status}
+                    onChange={(e) => changeStatus(e.target.value)}
+                    className="border rounded-lg px-3 py-1 text-sm"
+                  >
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="DONE">DONE</option>
+                  </select>
                 </div>
-              )}
 
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-500">Status:</span>
-
-                <select
-                  value={status}
-                  onChange={(e) => changeStatus(e.target.value)}
-                  className="border rounded-lg px-3 py-1 text-sm"
-                >
-                  <option value="OPEN">OPEN</option>
-                  <option value="IN_PROGRESS">IN_PROGRESS</option>
-                  <option value="DONE">DONE</option>
-                </select>
+                {ticket.created_at && (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-500">Created:</span>
+                    <span className="text-sm text-gray-700">
+                      {formatDate(ticket.created_at)}
+                    </span>
+                  </div>
+                )}
               </div>
-
-              {ticket.created_at && (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-500">Created:</span>
-                  <span className="text-sm text-gray-700">
-                    {formatDate(ticket.created_at)}
-                  </span>
-                </div>
-              )}
             </div>
-          </CardContent>
-        </Card>
 
-        {/* AI Summary */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>AI Summary</CardTitle>
-            {!summary && <Button onClick={runAI}>Generate</Button>}
-          </CardHeader>
+          {/* Divider */}
+          <div className="border-t"></div>
 
-          <CardContent>
+          {/* AI Summary */}
+          <div>
+            <div className="flex flex-row items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">AI Summary</h3>
+              {!summary && <Button onClick={runAI}>Generate</Button>}
+            </div>
+            <div>
             {summary ? (
               <div className="space-y-4">
                 <div className="prose max-w-none break-words whitespace-pre-wrap">
@@ -187,19 +190,21 @@ export default function TicketDetail() {
                 Generate AI summary for this ticket
               </p>
             )}
-          </CardContent>
-        </Card>
+            </div>
+          </div>
 
-        {/* AI Reply */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>AI Reply Draft</CardTitle>
-            {reply && !isEditingReply && (
-              <Button onClick={() => setIsEditingReply(true)}>Edit</Button>
-            )}
-          </CardHeader>
+          {/* Divider */}
+          <div className="border-t"></div>
 
-          <CardContent>
+          {/* AI Reply */}
+          <div>
+            <div className="flex flex-row items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">AI Reply Draft</h3>
+              {reply && !isEditingReply && (
+                <Button onClick={() => setIsEditingReply(true)}>Edit</Button>
+              )}
+            </div>
+            <div>
             {reply ? (
               isEditingReply ? (
                 <div className="space-y-3">
@@ -231,15 +236,16 @@ export default function TicketDetail() {
                 Generate reply suggestion for customer
               </p>
             )}
-          </CardContent>
-        </Card>
+            </div>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Activity Log</CardTitle>
-          </CardHeader>
+          {/* Divider */}
+          <div className="border-t"></div>
 
-          <CardContent>
+          {/* Activity Log */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Activity Log</h3>
+            <div>
             {logs.length === 0 ? (
               <p className="text-sm text-gray-400">No activity yet</p>
             ) : (
@@ -254,9 +260,11 @@ export default function TicketDetail() {
                 ))}
               </div>
             )}
-          </CardContent>
+            </div>
+          </div>
+          </div>
         </Card>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
