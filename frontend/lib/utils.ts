@@ -5,11 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Format date string from backend (stored as UTC) to localized string
- * @param dateStr - Date string from backend
- * @returns Formatted date string or original string if invalid
- */
+// API URL from environment variable or default to localhost
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+// Format date string from backend (stored as UTC) to localized string
 export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return "";
   

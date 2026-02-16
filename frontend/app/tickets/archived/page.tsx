@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import TicketCard from "@/components/TicketCard";
+import { API_URL } from "@/lib/utils";
 
 export default function ArchivedTicketsPage() {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -28,7 +29,7 @@ export default function ArchivedTicketsPage() {
   }, [router]);
 
   const loadTickets = () => {
-    fetch("http://127.0.0.1:8000/tickets")
+    fetch(`${API_URL}/tickets`)
       .then((res) => res.json())
       .then((data) => {
         // Filter only DONE tickets and sort by created_at date (newest first)

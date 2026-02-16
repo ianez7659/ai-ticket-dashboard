@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TicketCard from "@/components/TicketCard";
 import StatCard from "@/components/StatCard";
+import { API_URL } from "@/lib/utils";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -25,11 +26,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!isLoading) {
-      fetch("http://127.0.0.1:8000/dashboard/stats")
+      fetch(`${API_URL}/dashboard/stats`)
         .then((res) => res.json())
         .then(setStats);
 
-      fetch("http://127.0.0.1:8000/tickets/recent")
+      fetch(`${API_URL}/tickets/recent`)
         .then((res) => res.json())
         .then(setTickets);
     }

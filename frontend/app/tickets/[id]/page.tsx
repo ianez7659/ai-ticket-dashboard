@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { formatDate } from "@/lib/utils";
+import { formatDate, API_URL } from "@/lib/utils";
 import AdminLayout from "@/components/layout/AdminLayout";
 
 export default function TicketDetail() {
@@ -21,7 +21,7 @@ export default function TicketDetail() {
   const [displayedLogsCount, setDisplayedLogsCount] = useState(4);
 
   const runAI = async () => {
-    const res = await fetch(`http://127.0.0.1:8000/tickets/${id}/summarize`, {
+    const res = await fetch(`${API_URL}/tickets/${id}/summarize`, {
       method: "POST",
     });
 
@@ -34,7 +34,7 @@ export default function TicketDetail() {
     setStatus(newStatus);
 
     await fetch(
-      `http://127.0.0.1:8000/tickets/${id}/status?status=${newStatus}`,
+      `${API_URL}/tickets/${id}/status?status=${newStatus}`,
       { method: "PUT" },
     );
     loadLogs();
@@ -44,7 +44,7 @@ export default function TicketDetail() {
   const [isEditingReply, setIsEditingReply] = useState(false);
   
   const runReplyAI = async () => {
-    const res = await fetch(`http://127.0.0.1:8000/tickets/${id}/reply`, {
+    const res = await fetch(`${API_URL}/tickets/${id}/reply`, {
       method: "POST",
     });
 
@@ -71,7 +71,7 @@ export default function TicketDetail() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetch(`http://127.0.0.1:8000/tickets/${id}`)
+      fetch(`${API_URL}/tickets/${id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("Ticket data:", data);
@@ -90,7 +90,7 @@ export default function TicketDetail() {
   }, [ticket]);
 
   const loadLogs = () => {
-    fetch(`http://127.0.0.1:8000/tickets/${id}/logs`)
+    fetch(`${API_URL}/tickets/${id}/logs`)
       .then((res) => res.json())
       .then((data) => setLogs(data));
   };

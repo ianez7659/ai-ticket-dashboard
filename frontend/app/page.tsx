@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { API_URL } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Home() {
@@ -53,7 +54,7 @@ export default function Home() {
       });
 
       const response = await fetch(
-        `http://127.0.0.1:8000/tickets?${params.toString()}`,
+        `${API_URL}/tickets?${params.toString()}`,
         { 
           method: "POST",
           headers: {

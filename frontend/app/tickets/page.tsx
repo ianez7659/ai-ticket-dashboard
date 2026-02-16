@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import TicketCard from "@/components/TicketCard";
+import { API_URL } from "@/lib/utils";
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -27,7 +28,7 @@ export default function TicketsPage() {
   }, [router]);
 
   const loadTickets = () => {
-    fetch("http://127.0.0.1:8000/tickets")
+    fetch(`${API_URL}/tickets`)
       .then((res) => res.json())
       .then((data) => {
         // Sort by created_at date (newest first)
