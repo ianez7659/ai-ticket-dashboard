@@ -81,67 +81,89 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-xl space-y-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Support Center</h1>
-          <p className="text-gray-500 mt-2">
-            Submit your issue and our team will respond quickly
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="container mx-auto px-6 py-12">
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Hero Section */}
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+              AI-Powered Customer Support Center
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              Submit a ticket and manage responses with AI assistance
+            </p>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Create Support Ticket</CardTitle>
-          </CardHeader>
+          {/* Ticket Form */}
+          <Card id="ticket-form" className="max-w-xl mx-auto">
+            <CardHeader>
+              <CardTitle>Create Support Ticket</CardTitle>
+            </CardHeader>
 
-          <CardContent className="space-y-4">
-            <Input
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <CardContent className="space-y-4">
+              <Input
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
 
-            <Input
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+              <Input
+                type="email"
+                placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
 
-            <Input
-              placeholder="Issue title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
+              <Input
+                placeholder="Issue title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
 
-            <Textarea
-              placeholder="Describe your issue..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
+              <Textarea
+                placeholder="Describe your issue..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
 
-            <Button className="w-full" onClick={submitTicket}>
-              Submit Ticket
-            </Button>
+              <Button className="w-full" onClick={submitTicket}>
+                Submit Ticket
+              </Button>
 
-            {success && (
-              <p className="text-green-600 text-sm">
-                Ticket submitted successfully
+              {success && (
+                <p className="text-green-600 text-sm text-center">
+                  Ticket submitted successfully
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Admin Demo Login */}
+          <div className="text-center space-y-3">
+            <div className="inline-block">
+              <p className="text-gray-600 mb-3 text-sm">
+                Want to explore the admin dashboard? Login with the following password: admin123
               </p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* admin login */}
-        <div className="text-center">
-          <Link href="/login" className="text-sm text-gray-500 underline">
-            Admin Login
-          </Link>
+              <Link href="/login" className="block">
+                <Button
+                  variant="outline"
+                  className="px-8 py-6 text-lg border-2 font-semibold w-full"
+                  size="lg"
+                >
+                  Admin Demo Login
+                </Button>
+              </Link>
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg w-full mt-3">
+                <p className="text-sm text-blue-800 text-center">
+                  <span className="font-semibold">Admin demo password:</span> <code className="bg-blue-100 px-2 py-1 rounded">admin123</code>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
