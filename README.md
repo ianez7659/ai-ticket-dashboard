@@ -1,4 +1,4 @@
-# 🤖 AI Support Ticket Dashboard
+# AI Support Ticket Dashboard
 
 Production-style AI customer support dashboard built with **Next.js + FastAPI + PostgreSQL + OpenAI**.
 
@@ -8,15 +8,16 @@ Live Demo: https://ai-ticket-dashboard.vercel.app/
 
 ### Demo Account
 
-Admin access:
+Admin access uses **JWT authentication**:
 
+**Username:** `admin`  
 **Password:** `admin123`
 
-Visit the landing page and click "Admin Demo Login" to explore the dashboard.
+Visit the landing page and click "Admin Demo Login" to go to the login page, then sign in with the credentials above to explore the dashboard.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 **Frontend**
 
@@ -32,6 +33,7 @@ Visit the landing page and click "Admin Demo Login" to explore the dashboard.
 * SQLAlchemy
 * PostgreSQL
 * OpenAI API
+* JWT authentication (python-jose, passlib/bcrypt)
 
 **Deploy**
 
@@ -41,7 +43,7 @@ Visit the landing page and click "Admin Demo Login" to explore the dashboard.
 
 ---
 
-## ✨ Core Features
+## Core Features
 
 ### Public Ticket Submission
 
@@ -49,6 +51,7 @@ Anyone can submit a support ticket from the landing page. (no login)
 
 ### Admin Dashboard
 
+* **JWT login** (username + password → access token)
 * Ticket statistics (Open / In Progress / Done)
 * Recent tickets overview
 * Quick navigation to ticket detail
@@ -69,7 +72,7 @@ Anyone can submit a support ticket from the landing page. (no login)
 
 ---
 
-## 🧱 Architecture
+## Architecture
 
 ```
 Frontend (Next.js)
@@ -85,14 +88,15 @@ Clean separation between frontend UI and backend logic.
 
 **Backend Structure:**
 
-* **Routes**: API endpoints (`/tickets`, `/dashboard`)
+* **Routes**: API endpoints (`/tickets`, `/dashboard`, `/auth/login`)
 * **Services**: Business logic (AI integration, logging)
-* **Models**: Database schema (SQLAlchemy)
-* **Config**: External service clients (OpenAI)
+* **Auth**: JWT issue/verify, password hashing, protected routes
+* **Models**: Database schema (SQLAlchemy: User, Ticket, ActivityLog)
+* **Config**: External service clients (OpenAI, JWT)
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Landing page with ticket submission form
    ![Landing Page](./screenshots/ai-ticket-landing.png)
@@ -113,6 +117,7 @@ Clean separation between frontend UI and backend logic.
 
 * Fullstack architecture design
 * REST API design with FastAPI
+* JWT-based authentication (login, protected routes)
 * AI integration into real workflows
 * State management across dashboard
 * Production-style UI structure
@@ -125,7 +130,6 @@ Clean separation between frontend UI and backend logic.
 
 ## 🧩 Future Improvements
 
-* JWT authentication
 * Role-based access control
 * WebSocket real-time updates
 * Advanced search & filtering
@@ -166,6 +170,14 @@ Backend runs on `http://localhost:8000`
 Create PostgreSQL database and update `DATABASE_URL` in backend `.env` file.
 
 Tables will be created automatically on first run.
+
+**4. Backend environment variables (optional)**
+
+For admin login to work, set in backend `.env` (and on Railway Variables for production):
+
+* `JWT_SECRET_KEY` — A long random string used to sign JWTs (e.g. generate with `python -c "import secrets; print(secrets.token_hex(32))"`).
+* `JWT_ACCESS_TOKEN_EXPIRE_MINUTES` — Optional; default is 60.
+* `OPENAI_API_KEY` — Optional; required only for AI summarization and reply features.
 
 ---
 
