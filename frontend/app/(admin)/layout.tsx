@@ -14,8 +14,8 @@ export default function AdminRouteLayout({
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    const isAdmin = localStorage.getItem("admin");
-    if (!isAdmin) {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+    if (!token) {
       router.replace("/login");
     } else {
       setIsAuthorized(true);

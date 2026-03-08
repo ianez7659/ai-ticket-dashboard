@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { formatDate, API_URL } from "@/lib/utils";
+import { formatDate, API_URL, getAuthHeaders } from "@/lib/utils";
 
 export default function TicketDetail() {
   const params = useParams();
@@ -24,8 +24,10 @@ export default function TicketDetail() {
   const [isLoading, setIsLoading] = useState(true);
 
   const runAI = async () => {
+    const headers = getAuthHeaders();
     const res = await fetch(`${API_URL}/tickets/${id}/summarize`, {
       method: "POST",
+      headers,
     });
     const data = await res.json();
     setSummary(data.summary);
@@ -34,16 +36,19 @@ export default function TicketDetail() {
 
   const changeStatus = async (newStatus: string) => {
     setStatus(newStatus);
+    const headers = getAuthHeaders();
     await fetch(
       `${API_URL}/tickets/${id}/status?status=${newStatus}`,
-      { method: "PUT" },
+      { method: "PUT", headers },
     );
     loadLogs();
   };
 
   const runReplyAI = async () => {
+    const headers = getAuthHeaders();
     const res = await fetch(`${API_URL}/tickets/${id}/reply`, {
       method: "POST",
+      headers,
     });
     const data = await res.json();
     setReply(data.reply);
@@ -56,13 +61,15 @@ export default function TicketDetail() {
   };
 
   const loadLogs = () => {
-    fetch(`${API_URL}/tickets/${id}/logs`)
+    const headers = getAuthHeaders();
+    fetch(`${API_URL}/tickets/${id}/logs`, { headers })
       .then((res) => res.json())
       .then((data) => setLogs(data));
   };
 
   useEffect(() => {
-    fetch(`${API_URL}/tickets/${id}`)
+    const headers = getAuthHeaders();
+    fetch(`${API_URL}/tickets/${id}`, { headers })
       .then((res) => res.json())
       .then((data) => {
         setTicket(data);
@@ -222,7 +229,7 @@ export default function TicketDetail() {
                         {logs.slice(0, displayedLogsCount).map((log) => (
                           <div
                             key={log.id}
-                            className="text-sm px-3 py-2"
+                            className="text-sm px-3 py-2 animate-fade-in-up"
                           >
                             {log.action}
                           </div>
@@ -243,7 +250,7 @@ export default function TicketDetail() {
                       {logs.map((log) => (
                         <div
                           key={log.id}
-                          className="text-sm px-3 py-2"
+                          className="text-sm px-3 py-2 animate-fade-in-up"
                         >
                           {log.action}
                         </div>

@@ -8,6 +8,31 @@ export function cn(...inputs: ClassValue[]) {
 // API URL from environment variable or default to localhost
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
+const ACCESS_TOKEN_KEY = "access_token";
+
+/** Get Authorization header for authenticated API requests. Use in (admin) pages only. */
+export function getAuthHeaders(): HeadersInit {
+  if (typeof window === "undefined") return {};
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export function getAccessToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(ACCESS_TOKEN_KEY);
+}
+
+export function setAccessToken(token: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(ACCESS_TOKEN_KEY, token);
+}
+
+export function clearAccessToken(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem("admin"); // legacy
+}
+
 // Format date string from backend (stored as UTC) to localized string
 export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return "";

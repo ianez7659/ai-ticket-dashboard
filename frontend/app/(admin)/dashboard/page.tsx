@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import TicketCard from "@/components/TicketCard";
 import StatCard from "@/components/StatCard";
-import { API_URL } from "@/lib/utils";
+import { API_URL, getAuthHeaders } from "@/lib/utils";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -12,11 +12,12 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_URL}/dashboard/stats`)
+    const headers = getAuthHeaders();
+    fetch(`${API_URL}/dashboard/stats`, { headers })
       .then((res) => res.json())
       .then(setStats);
 
-    fetch(`${API_URL}/tickets/recent`)
+    fetch(`${API_URL}/tickets/recent`, { headers })
       .then((res) => res.json())
       .then(setTickets)
       .finally(() => setIsLoading(false));

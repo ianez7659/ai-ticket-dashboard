@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, LayoutDashboard } from "lucide-react";
+import { clearAccessToken } from "@/lib/utils";
 
 export default function AdminLayout({ children }: any) {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function AdminLayout({ children }: any) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const logout = () => {
-    localStorage.removeItem("admin");
+    clearAccessToken();
     router.push("/");
   };
 
@@ -27,7 +28,7 @@ export default function AdminLayout({ children }: any) {
 
   const SidebarContent = () => (
     <>
-      <div className="flex items-center justify-start gap-2 p-6 bg-gray-200">
+      <div className="flex items-center justify-start gap-2 p-4 ">
         <LayoutDashboard className="h-8 w-8 text-gray-700" />
         <span className="font-bold text-2xl text-gray-700">I.Ai.S</span>
       </div>
@@ -64,17 +65,18 @@ export default function AdminLayout({ children }: any) {
         <SidebarContent />
       </aside>
 
-      {/* Mobile drawer overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-md z-40 md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
+      {/* Mobile drawer overlay - always in DOM for fade transition */}
+      <div
+        className={`fixed inset-0 bg-black/30 backdrop-blur-md z-40 md:hidden transition-opacity duration-200 ${
+          isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+        aria-hidden={!isMobileMenuOpen}
+      />
 
       {/* Mobile sidebar drawer */}
       <aside
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r z-50 transform transition-transform duration-300 ease-out md:hidden ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -124,11 +126,11 @@ export default function AdminLayout({ children }: any) {
                 <Menu className="h-5 w-5" />
               )}
             </button>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <h1 className="font-semibold">Ianez Ai-Support</h1>
               <span className="text-gray-400">/</span>
               <span className="text-gray-600 font-medium">{getPageTitle()}</span>
-            </div>
+            </div> */}
           </div>
 
           <button
@@ -140,7 +142,9 @@ export default function AdminLayout({ children }: any) {
         </header>
 
         {/* page content */}
-        <main className="p-6">{children}</main>
+        <main className="p-6">
+          <div className="animate-page-enter">{children}</div>
+        </main>
       </div>
     </div>
   );

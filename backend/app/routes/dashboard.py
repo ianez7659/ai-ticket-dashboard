@@ -1,13 +1,17 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..db import get_db
-from ..models import Ticket
+from ..models import Ticket, User
+from ..auth.deps import get_current_user
 
 router = APIRouter()
 
 
 @router.get("/dashboard/stats")
-def dashboard_stats(db: Session = Depends(get_db)):
+def dashboard_stats(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Get dashboard statistics"""
     tickets = db.query(Ticket).all()
 

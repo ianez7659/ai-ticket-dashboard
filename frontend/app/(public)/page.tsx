@@ -141,7 +141,7 @@ export default function Home() {
           <div className="text-center space-y-3">
             <div className="inline-block">
               <p className="text-gray-600 mb-3 text-sm">
-                Want to explore the admin dashboard? Login with the following password: admin123
+                Want to explore the admin dashboard? Use username <code className="bg-gray-100 px-1 rounded">admin</code> and password <code className="bg-gray-100 px-1 rounded">admin123</code>.
               </p>
               <Link href="/login" className="block">
                 <Button
@@ -154,7 +154,7 @@ export default function Home() {
               </Link>
               <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg w-full mt-3">
                 <p className="text-sm text-blue-800 text-center">
-                  <span className="font-semibold">Admin demo password:</span> <code className="bg-blue-100 px-2 py-1 rounded">admin123</code>
+                  <span className="font-semibold">Demo:</span> <code className="bg-blue-100 px-2 py-1 rounded">admin</code> / <code className="bg-blue-100 px-2 py-1 rounded">admin123</code>
                 </p>
               </div>
             </div>

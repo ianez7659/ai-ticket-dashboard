@@ -4,10 +4,13 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from .db import get_db
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import tickets, dashboard
+from .routes import tickets, dashboard, auth
+from .auth.seed import seed_admin_if_empty
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
+# Create default admin user if no users exist
+seed_admin_if_empty()
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -22,6 +25,7 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(auth.router)
 app.include_router(tickets.router)
 app.include_router(dashboard.router)
 

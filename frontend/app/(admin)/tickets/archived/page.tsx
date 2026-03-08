@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import TicketCard from "@/components/TicketCard";
-import { API_URL } from "@/lib/utils";
+import { API_URL, getAuthHeaders } from "@/lib/utils";
 
 export default function ArchivedTicketsPage() {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -16,7 +16,8 @@ export default function ArchivedTicketsPage() {
   const itemsPerPage = 4;
 
   const loadTickets = () => {
-    fetch(`${API_URL}/tickets`)
+    const headers = getAuthHeaders();
+    fetch(`${API_URL}/tickets`, { headers })
       .then((res) => res.json())
       .then((data) => {
         const doneTickets = data.filter((t: any) => t.status === "DONE");

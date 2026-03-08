@@ -20,7 +20,7 @@ export default function TicketCard({ ticket }: TicketCardProps) {
   return (
     <div
       onClick={() => router.push(`/tickets/${ticket.id}`)}
-      className="border rounded-lg p-4 shadow-sm hover:shadow-md transition my-3 cursor-pointer"
+      className="border rounded-lg p-4 shadow-sm hover:shadow-md transition my-3 cursor-pointer animate-fade-in-up"
     >
       <div className="flex justify-between items-start mb-2 gap-2">
         <h3 className="font-semibold text-lg flex-1 break-words">{ticket.title}</h3>
