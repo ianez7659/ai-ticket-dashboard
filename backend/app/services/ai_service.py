@@ -7,6 +7,9 @@ import uuid
 
 def summarize_ticket(ticket_id: str, db: Session) -> dict:
     """Generate AI summary for a ticket"""
+    if not client:
+        return {"error": "OpenAI API key not configured"}
+    
     ticket = db.query(Ticket).filter(Ticket.id == uuid.UUID(ticket_id)).first()
 
     if not ticket:
@@ -34,6 +37,9 @@ def summarize_ticket(ticket_id: str, db: Session) -> dict:
 
 def generate_reply(ticket_id: str, db: Session) -> dict:
     """Generate AI reply for a ticket"""
+    if not client:
+        return {"error": "OpenAI API key not configured"}
+    
     ticket = db.query(Ticket).filter(Ticket.id == uuid.UUID(ticket_id)).first()
 
     if not ticket:
