@@ -15,7 +15,6 @@ export default function Home() {
   const [success, setSuccess] = useState(false);
 
   const submitTicket = async () => {
-    // Validate all fields are filled and not just whitespace
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     const trimmedTitle = title.trim();
@@ -38,7 +37,6 @@ export default function Home() {
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       alert("Please enter a valid email address");
@@ -55,7 +53,7 @@ export default function Home() {
 
       const response = await fetch(
         `${API_URL}/tickets?${params.toString()}`,
-        { 
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -84,7 +82,6 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Hero Section */}
           <div className="text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
               AI-Powered Customer Support Center
@@ -94,7 +91,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Ticket Form */}
           <Card id="ticket-form" className="max-w-xl mx-auto">
             <CardHeader>
               <CardTitle>Create Support Ticket</CardTitle>
@@ -142,7 +138,6 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Admin Demo Login */}
           <div className="text-center space-y-3">
             <div className="inline-block">
               <p className="text-gray-600 mb-3 text-sm">
